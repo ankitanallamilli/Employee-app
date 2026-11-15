@@ -1,0 +1,32 @@
+services:
+  mysql:                     # Data tier
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: empdb
+      MYSQL_USER: empuser
+      MYSQL_PASSWORD: emppass
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:                       # Presentation + Application tiers
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/empdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USER: empuser
+      DB_PASSWORD: emppass
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysqldata:

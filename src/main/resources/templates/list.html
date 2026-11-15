@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Employees</title>
+  <link rel="stylesheet" th:href="@{/style.css}"/>
+</head>
+<body>
+<main>
+  <h1>Employee Management</h1>
+  <p class="sub">Thymeleaf &rarr; Spring Boot &rarr; MySQL</p>
+
+  <div class="flash" th:if="${message}" th:text="${message}"></div>
+
+  <div class="toolbar">
+    <form th:action="@{/employees}" method="get" class="search">
+      <input type="text" name="keyword" th:value="${keyword}" placeholder="Search by name or department"/>
+      <button type="submit">Search</button>
+    </form>
+    <a class="btn" th:href="@{/employees/new}">Add employee</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Email</th><th>Department</th><th>Salary</th><th></th></tr>
+    </thead>
+    <tbody>
+      <tr th:each="e : ${employees}">
+        <td th:text="${e.id}"></td>
+        <td th:text="${e.name}"></td>
+        <td th:text="${e.email}"></td>
+        <td th:text="${e.department}"></td>
+        <td th:text="${#numbers.formatDecimal(e.salary, 1, 'COMMA', 2, 'POINT')}"></td>
+        <td class="actions">
+          <a class="btn small secondary" th:href="@{/employees/{id}/edit(id=${e.id})}">Edit</a>
+          <form th:action="@{/employees/{id}/delete(id=${e.id})}" method="post"
+                onsubmit="return confirm('Delete this employee?');">
+            <button class="small danger" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(employees)}"><td colspan="6" class="empty">No employees found.</td></tr>
+    </tbody>
+  </table>
+</main>
+</body>
+</html>
