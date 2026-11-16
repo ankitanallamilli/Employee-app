@@ -28,11 +28,11 @@
     <plugins>
       <plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin>
     </plugins>
-  </build><servers>
-    <server>
+  </build>
+         <distributionManagement>
+    <repository>
         <id>nexus-releases</id>
-        <username>admin</username>
-        <password>YOUR_NEXUS_PASSWORD</password>
-    </server>
-</servers>
+        <url>http://54.243.16.224:8081/repository/maven-releases/</url>
+    </repository>
+</distributionManagement>
 </project>
