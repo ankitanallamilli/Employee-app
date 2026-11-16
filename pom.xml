@@ -28,5 +28,11 @@
     <plugins>
       <plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin>
     </plugins>
-  </build>
+  </build><servers>
+    <server>
+        <id>nexus-releases</id>
+        <username>admin</username>
+        <password>YOUR_NEXUS_PASSWORD</password>
+    </server>
+</servers>
 </project>
